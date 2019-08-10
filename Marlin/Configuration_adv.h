@@ -969,6 +969,14 @@
 //#define EXTRA_FAN_SPEED
 
 /**
+ * Expected Printer Check
+ * This feature will check a given expected printer name against the printer name set in
+ * the firmware. If they do not match the print will be killed displaying an error message.
+ *   'M16 expected_printer_name'
+ */
+#define EXPECTED_PRINTER_CHECK
+
+/**
  * Advanced Pause
  * Experimental feature for filament change support and for parking the nozzle when paused.
  * Adds the GCode M600 for initiating filament change.

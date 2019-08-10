@@ -6906,6 +6906,19 @@ void report_xyz_from_stepper_position() {
 
 #endif // SPINDLE_LASER_ENABLE
 
+#if ENABLED(EXPECTED_PRINTER_CHECK)
+
+  /**
+  * M16: Check if the printer is the expected one. If it is not, kill the print.
+  */
+  inline void gcode_M16() {
+    if (parser.string_arg != MACHINE_NAME) {
+      kill("Not Expected Printer. Expected:" + MACHINE_NAME + ", Actual:" + parser.string_arg);
+    }
+  }
+
+#endif
+
 /**
  * M17: Enable power on all stepper motors
  */
