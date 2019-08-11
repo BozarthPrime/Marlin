@@ -83,6 +83,7 @@
  * M3   - Turn laser/spindle on, set spindle/laser speed/power, set rotation to clockwise
  * M4   - Turn laser/spindle on, set spindle/laser speed/power, set rotation to counter-clockwise
  * M5   - Turn laser/spindle off
+ * M16  - Expected printer check
  * M17  - Enable/Power all stepper motors
  * M18  - Disable all stepper motors; same as M84
  * M20  - List SD card. (Requires SDSUPPORT)
@@ -6907,16 +6908,14 @@ void report_xyz_from_stepper_position() {
 #endif // SPINDLE_LASER_ENABLE
 
 #if ENABLED(EXPECTED_PRINTER_CHECK)
-
   /**
   * M16: Check if the printer is the expected one. If it is not, kill the print.
   */
   inline void gcode_M16() {
-    if (parser.string_arg != MACHINE_NAME) {
-      kill("Not Expected Printer. Expected:" + MACHINE_NAME + ", Actual:" + parser.string_arg);
+    if (strcmp(MACHINE_NAME, parser.string_arg) != 0) {
+      kill(PSTR(MSG_EXPECTED_PRINTER));
     }
   }
-
 #endif
 
 /**
@@ -12767,6 +12766,8 @@ void process_parsed_command() {
         case 4: gcode_M3_M4(false); break;                        // M4: Laser/CCW-Spindle Power
         case 5: gcode_M5(); break;                                // M5: Laser/Spindle OFF
       #endif
+
+      case 16: gcode_M16(); break;                              // M16: Expected printer check
 
       case 17: gcode_M17(); break;                                // M17: Enable all steppers
 
